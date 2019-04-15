@@ -138,10 +138,11 @@ Checking the status of your repo you should now see that you can track your empt
 
 Now we are in need of the most the most fundamental of fundamentals to compile our project, a main function. As we will consider the main function a new feature you must perform the following steps:
 
- * Checkout a new branch to implement your features, branching from this branch
- * Write a main function in an appropriate file in your project, that is to output "Hello ESPL" to the terminal
- * Add, commit and PUSH the work you have done to the origin remote
- * Merge the changes back to `merging`
+ * Checkout a new branch to implement your features, branching from this branch.
+ * Write a main function in an appropriate file in your project, that is to output "Hello ESPL" to the terminal.
+ * Add, commit and PUSH the work you have done to the origin remote.
+ * Merge the changes back to `merging`, pushing the result.
+ * Come back to this branch to continue with the instructions below.
 
 Now you should have at least one source file and be able to rerun your CMake command to generate the required make files for your project. If all went well in your build folder you should now see a Makefile that was generated from CMake. To then build your project you need to run the command `make` from within your build directory. If all went well you should now find a built binary in your bin directory with the same name as the executable specified in you `CMakeLists.txt`.
 
