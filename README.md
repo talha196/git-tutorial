@@ -198,7 +198,7 @@ Thus any complicated merge conflicts will be contained to the merging branch and
 
 Let us now go to the merging branch. To check the branches that exist in the repository one can use the `git branch` command. A new repository might not show all of the branches as Git does not download all information when not required, to try and minimize the data required locally. `man git fetch` will detail how Git fetch can be used.
 
-When no remote is specified the default `origin` is used. Run `git fetch` to thus retrieve all the branches and tags on the origin remote. Not run `git branch` to list all of the branches on the origin. We want a branch called `merging` where we will perform our merges before merging to master. To do this we need to first create a branch and then swap to this branch. To create a new branch simply use
+When no remote is specified the default `origin` is used. Run `git fetch` to thus retrieve all the branches and tags on the origin remote. Now run `git branch --all` to list all of the branches on the origin. We want a branch called `merging` where we will perform our merges before merging to master. To do this we need to first create a branch and then swap to this branch. To create a new branch simply use
 
 ``` bash
 git branch merging
@@ -216,7 +216,7 @@ git checkout -b merging
 
 # Merge Basics
 
-Now that you have checked out your merging branch we are going to perform some merges. As this tutorial will also look into building C projects using CMake specifically we will using merging and other Git tools to pull a basic CMake project together.
+Now that you have checked out your merging branch we are going to perform some merges. As this tutorial will also look into building C projects, using CMake specifically, we will using merging and other Git tools to pull a basic CMake project together.
 
 Firstly we will want to make our Git server (origin remote) aware of this new branch we have created, as it does not get made aware of this change unless we tell it. Similarly to before we will use the `git push` command but this time our branch has changed.
 
@@ -227,7 +227,7 @@ git push ______ ______
 ```
 You will need to fill in those two blanks.
 
-Now back to the problem. You should be able to find a branch called `make`. On this branch is the skeleton for our CMake project. Now to merge the `CMakeLists.txt` file, which is the core CMake file for any CMake build, into our merging branch we need to use the `git merge` command. Details of this can be found in the manual, you should be able to run the correct `man` command yourself now to do this.
+Now back to the problem. You should be able to find a branch called `make`. On this branch is the skeleton for our CMake project. Now to merge the `CMakeLists.txt` file, which is the core CMake file for any CMake build, into our merging branch. We need to use the `git merge` command. Details of this can be found in the manual, you should be able to run the correct `man` command yourself now to do this.
 
 Merging is always done on the branch into which you wish to merge. If you wish to merge your `merging` branch into `master` you would first need to `git checkout master` and then merge `merging` into `master`. As we are wanting to merge the `make` branch into our current branch we don't need to change branches.
 
@@ -245,16 +245,16 @@ CMakeLists.txt | 11 ++++++++++++
 1 file changed, 11 insertions(+)
 create mode 100644 CMakeLists.txt
 ```
-Telling us that a new file was created with 12 new insertions, 1 for each line in the file. Now if we run `git log` we will see the commits made on the make branch when this `CMakeLists.txt` file was added to the repo.
+Telling us that a new file was created with 11 new insertions, 1 for each line in the file. Now if we run `git log` we will see the commits made on the make branch when this `CMakeLists.txt` file was added to the repo.
 
 Now that we have got the commits from the make branch merged into our branch we should push these changes to the remote, running `git push` again will now show that the files have been pushed. If we rerun `git log` you will notice that the commit where the `CMakeLists.txt` file was commited has now changed from
 
 ``` bash
-(HEAD -> merging, make)
+(HEAD -> merging, origin/make, make)
 ```
 to
 ``` bash
-(HEAD -> merging, origin/merging, make)
+(HEAD -> merging, origin/merging, origin/make, make)
 ```
 meaning that this commit can now found be found in origin/merging and not just merging, origin/make and make. This annotation (`origin/`) signifies the remote branch (ie. the branch on the server). The branch merging is your local branch while the branch origin/merging is that on the remote.
 
@@ -269,7 +269,7 @@ Now running the command `man cmake` we can see that to execute a CMake script on
 ``` bash
 cmake -B build
 ```
-To execute the CMake script whilst specifying the `build` directory as our build directory. Running `git status` you can now see that the build directory is now untracked and has had changes done to it. Running `git status build` shows us that the build directory now includes a `CMakeCache.txt` and a directory `CMakeFiles`. These are the temporary files generated by CMake. Instead of using the '-B' option one can also first navigate into the build director and then execute `cmake ..` where .. specifies the folder in which the CMake script can be found while the current directory (build) is used as the build directory. We will see that the `cmake` command did not run correctly right now, lets ignore this for now.
+To execute the CMake script whilst specifying the `build` directory as our build directory. Running `git status` you can now see that the build directory is now untracked and has had changes done to it. Running `git status build` shows us that the build directory now includes a `CMakeCache.txt` and a directory `CMakeFiles`. These are the temporary files generated by CMake. Instead of using the '-B' option one can also first navigate into the build director and then execute `cmake ..` where `..` specifies the folder in which the CMake script can be found while the current directory (build) is used as the build directory. We will see that the `cmake` command did not run correctly right now, lets ignore this for now.
 
 Now before we go ahead and actually get the CMake project building lets play it safe and add **all** of the current files in the Git to the staging area, commit and push them so that we have a safe point to return to. Do this yourself, using a meaningful commit message.
 
@@ -296,7 +296,7 @@ To do so run
 ``` bash
 git rm -r --cached .
 ```
-This will recursively remove tracked files from the staging cache. Running `git status` again will now show us that all of the files in the repo have been deleted, meaning deleted from the staging area. In the untracked files section you will now only see the README, CMakeLists and .gitignore as these files have not been ignored via the gitignore. Now we can add these files back and commit them using something such as "Actualizing gitignore" as the commit message. Now if we look at the repo through the web interface, looking specifically at the files on the merging branch, you will see that the build files are not included. It is important to add all files that you do not want included in the repository to be added to the gitignore so that there is no way for them to become accidentally included in a commit, this makes you look like a Git noob if you are committing build files.
+This will recursively remove tracked files from the staging cache. Running `git status` again will now show us that all of the files in the repo have been deleted, meaning deleted from the staging area. In the untracked files section you will now only see the README, CMakeLists and .gitignore as these files have not been ignored via the gitignore. Now we can add these files back and commit them using something such as "Actualizing gitignore" as the commit message. After pushing the new commit, if we look at the repo through the web interface, looking specifically at the files on the merging branch, you will see that the build files are not included. It is important to add all files that you do not want included in the repository to be added to the gitignore so that there is no way for them to become accidentally included in a commit, this makes you look like a Git noob if you are committing build files.
 
 
 ## Onwards With CMake
@@ -304,3 +304,5 @@ This will recursively remove tracked files from the staging cache. Running `git 
 Now that we have solved that problem let us continue building our CMake project. Previously we saw that CMake complained that there were no sources given to the target foo. Let us pick through the CMake file so we understand what went wrong and what we need to fix it.
 
 To do so jump to the branch `compiling`.
+
+In your web browser, if you select the branch `compiling` you can read the README directly in the browser. 
