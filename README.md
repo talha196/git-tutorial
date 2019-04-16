@@ -241,11 +241,11 @@ git merge make
 This should give us an output along the lines of
 
 ``` bash
-CMakeLists.txt | 11 ++++++++++++
-1 file changed, 11 insertions(+)
+CMakeLists.txt | 12 ++++++++++++
+1 file changed, 12 insertions(+)
 create mode 100644 CMakeLists.txt
 ```
-Telling us that a new file was created with 11 new insertions, 1 for each line in the file. Now if we run `git log` we will see the commits made on the make branch when this `CMakeLists.txt` file was added to the repo.
+Telling us that a new file was created with 12 new insertions, 1 for each line in the file. Now if we run `git log` we will see the commits made on the make branch when this `CMakeLists.txt` file was added to the repo.
 
 Now that we have got the commits from the make branch merged into our branch we should push these changes to the remote, running `git push` again will now show that the files have been pushed. If we rerun `git log` you will notice that the commit where the `CMakeLists.txt` file was commited has now changed from
 
