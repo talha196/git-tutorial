@@ -9,3 +9,4 @@ include_directories(include)
 file(GLOB SOURCES "src/*.c")
 
 add_executable(foo ${SOURCES})
+
