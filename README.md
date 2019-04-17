@@ -39,7 +39,7 @@ The define directive is used for text substitution, allowing for few nifty littl
   Using the `ifdef` conditional preprocessor statements one can set flags. For example a "debug" mode could be enabled using a Boolean debug flag that then allows for the inclusion of debug code, such as print statements
 
   ``` C
-#define DEBUG_MA_CODEZ  1
+#define DEBUG_MA_CODEZ	1
 ...
 #if DEBUG_MA_CODEZ
 printf("Value waz %d", da_value);
@@ -138,10 +138,11 @@ Checking the status of your repo you should now see that you can track your empt
 
 Now we are in need of the most the most fundamental of fundamentals to compile our project, a main function. As we will consider the main function a new feature you must perform the following steps:
 
- * Checkout a new branch to implement your features, branching from this branch
- * Write a main function in an appropriate file in your project, that is to output "Hello ESPL" to the terminal
- * Add, commit and PUSH the work you have done to the origin remote
- * Merge the changes back to `merging`
+ * Checkout a new branch to implement your features, branching from this branch.
+ * Write a main function in an appropriate file in your project, that is to output "Hello ESPL" to the terminal.
+ * Add, commit and PUSH the work you have done to the origin remote.
+ * Merge the changes back to `merging`, pushing the result.
+ * Come back to this branch to continue with the instructions below.
 
 Now you should have at least one source file and be able to rerun your CMake command to generate the required make files for your project. If all went well in your build folder you should now see a Makefile that was generated from CMake. To then build your project you need to run the command `make` from within your build directory. If all went well you should now find a built binary in your bin directory with the same name as the executable specified in you `CMakeLists.txt`.
 
@@ -149,4 +150,4 @@ Navigate to your bin directory and execute the binary by using the `./` Linux co
 
 Now we know roughly how to navigate around a Git repo, create, add and commit files as well as build a basic C project with an idea of what is happening behind the scenes. Before we look into the more advanced CMake features, such as linking libraries, you should merge your current project to master as it is now in a stable state. Binary files should not be included in your commits and should be left untracked. Modify your repository accordingly such the the binaries can never be accidentally added. Once that is done you will need to go to the `exercise` branch where you will need to use the Git logs, merging and the `git cherry-pick` command to get your exercise requirements and the library code. Useful articles can be found [here](https://www.git-tower.com/learn/git/faq/detached-head-when-checkout-commit) and [here](https://www.hacksparrow.com/how-to-merge-a-specific-commit-in-git.html) to explain the process.
 
-One branch will contain the necessary `.h` and `.c` files for a static library that we will build called `espl_lib`. Another branch will contain a `.patch` for your CMake script to link the library. Checkout the branches, find the files, verify their contents and then use cherry pick to merge them to your merging branch. The instructions (in a separate `.md` file) to continue can be found along with the CMake patch.
+One commit will contain the necessary `.h` and `.c` files for a static library that we will build called `espl_lib`. Another commit will contain a `.patch` for your CMake script to link the library. Checkout the commits, find the files, verify their contents and then use cherry pick to merge them to your merging branch. The instructions (in a separate `.md` file) to continue can also be found in a seperate commit.
