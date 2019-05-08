@@ -8,7 +8,7 @@ To do this tutorial you must fork this by clicking the fork button in the GitHub
 
 Hello and welcome to this Git tutorial. I am to help you get some savvy Git skills whilst also using the C compilation process and a C project as a means to provide a reasoning behind the power and necessity of Git. The C projects will also demonstrate how a state machine works and a basic way of implementing one.
 
-Please note that if you're reading these instruction whilst doing the tutorial they may dissapear if you change branch or so some git trickery that causes them to move/change. As such, while you get to grips with Git I would reccomend moving these README.md files, as they become available, somewhere outside of the current Git repo while you complete the challenge. 
+Please note that if you're reading these instruction whilst doing the tutorial they may dissapear if you change branch or do some git trickery that causes them to move/change. As such, while you get to grips with Git I would reccomend moving these README.md files, as they become available, somewhere outside of the current Git repo while you complete the challenge. 
 
 ## Git
 
