@@ -96,7 +96,8 @@ void drawTask() {
 
 		if(abs(ADC_GetConversionValue(ESPL_ADC_Joystick_2)-jstick2X)>=10)
 		{
-			jstickX=(joystickPosition.x-127)/4;
+			jstickX=(ADC_GetConversionValue(ESPL_ADC_Joystick_2)*320/4096)-160;
+
 
 		}
 		jstick2X=ADC_GetConversionValue(ESPL_ADC_Joystick_2);
@@ -104,7 +105,7 @@ void drawTask() {
 
 		if(abs(ADC_GetConversionValue(ESPL_ADC_Joystick_1)-jstick2Y)>=10)
 		{
-			jstickY=(joystickPosition.y-127)/2;
+			jstickY=-((ADC_GetConversionValue(ESPL_ADC_Joystick_1)*240/4096)-120-3);
 
 		}
 		jstick2Y= ADC_GetConversionValue(ESPL_ADC_Joystick_1);
