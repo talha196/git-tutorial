@@ -68,7 +68,7 @@ int main() {
  * Example task which draws to the display.
  */
 void drawTask() {
-	char str[100]; // buffer for messages to draw to display
+	char str[100], str1[100]; // buffers for messages to draw to display
 	struct coord joystickPosition; // joystick queue input buffer
 
 	font_t font1; // Load font for ugfx
@@ -89,79 +89,104 @@ void drawTask() {
 	// Start endless loop
 	while(TRUE) {
 		// wait for buffer swap
+		//Clear the LCD display
 		gdispClear(White);
-		//sprintf( str, "Axis 1: %5d|Axis 2: %5d",
-			//	joystickPosition.x,
-				//joystickPosition.y);
 
+		//Ignore noise in the X ADC values
 		if(abs(ADC_GetConversionValue(ESPL_ADC_Joystick_2)-jstick2X)>=10)
 		{
+			//map the value of ADC proportionally to the X axis of the LCD
 			jstickX=(ADC_GetConversionValue(ESPL_ADC_Joystick_2)*320/4096)-160;
-
 
 		}
 		jstick2X=ADC_GetConversionValue(ESPL_ADC_Joystick_2);
 
-
+		//Ignore noise in the Y ADC values
 		if(abs(ADC_GetConversionValue(ESPL_ADC_Joystick_1)-jstick2Y)>=10)
 		{
+			//map the value of ADC proportionally to the Y axis of the LCD
 			jstickY=-((ADC_GetConversionValue(ESPL_ADC_Joystick_1)*240/4096)-120-3);
-
 		}
 		jstick2Y= ADC_GetConversionValue(ESPL_ADC_Joystick_1);
 
+		//Drawing the triangle at the center using three lines
 		gdispDrawLine(160+jstickX,100+jstickY,180+jstickX,140+jstickY,Blue);
 		gdispDrawLine(140+jstickX,140+jstickY,180+jstickX,140+jstickY,Blue);
 		gdispDrawLine(140+jstickX,140+jstickY,160+jstickX,100+jstickY,Blue);
+		//Draw square and circle which revolves around triangle by theta
 		gdispFillArea(80*cos(theta+160)+160-20+jstickX, 80*sin(theta+160)+120-20+jstickY, 40, 40, Blue);
 		gdispFillCircle(80*cos(theta)+160+jstickX, 80*sin(theta)+120+jstickY ,20, Red);
+		//theta is radial position of the square/circle incremented by certain degrees at each iteration
 		theta=theta+0.03;
+		//initilize theta to 0 after one revolution to prevent variable overflow
 		if (theta==360.0)
 			theta=0.0;
+		//top and bottom text
 		sprintf(str,"Devil is a lie");
-		gdispDrawString(text_x_pos+jstickX, 0 +jstickY, str, font1, Black);
+		//display moving text at top and bottom
+		gdispDrawString(text_x_pos+jstickX, 2 +jstickY, str, font1, Black);
 		gdispDrawString(320-text_x_pos+jstickX, 230+jstickY, str, font1, Black);
+		//increment the x axis coordinates of the text to make it appear as moving horizontally
 		text_x_pos++;
+		//initilize text_x to 0 after completely moving through the screen horizontally to prevent variable overflow
 		if (text_x_pos==320)
 			text_x_pos=0;
 
+		//##Debouncing A,B,C,D,K Buttons#####
+		//edge triggering is implemented here. The counter only increments if the previous value does not equal the current value
+		if(!GPIO_ReadInputDataBit(ESPL_Register_Button_A, ESPL_Pin_Button_A)&&!GPIO_ReadInputDataBit(ESPL_Register_Button_A, ESPL_Pin_Button_A)!=regA){
 
-/*		if(!GPIO_ReadInputDataBit(ESPL_Register_Button_A, ESPL_Pin_Button_A)&&!GPIO_ReadInputDataBit(ESPL_Register_Button_A, ESPL_Pin_Button_A)!=regA){
 			counter_A++;
 
 		}
+		//Store the current value of button for next iteration
 		regA=!GPIO_ReadInputDataBit(ESPL_Register_Button_A, ESPL_Pin_Button_A);
 
 
-
+		//edge triggering is implemented here. The counter only increments if the previous value does not equal the current value
 		if(!GPIO_ReadInputDataBit(ESPL_Register_Button_B, ESPL_Pin_Button_B)&&(!GPIO_ReadInputDataBit(ESPL_Register_Button_B, ESPL_Pin_Button_B))!=regB){
+
 			counter_B++;
 
 		}
+		//Store the current value of button for next iteration
 		regB=!GPIO_ReadInputDataBit(ESPL_Register_Button_B, ESPL_Pin_Button_B);
 
+		//edge triggering is implemented here. The counter only increments if the previous value does not equal the current value
 		if(!GPIO_ReadInputDataBit(ESPL_Register_Button_C, ESPL_Pin_Button_C)&&!GPIO_ReadInputDataBit(ESPL_Register_Button_C, ESPL_Pin_Button_C)!=regC){
+
 			counter_C++;
 
 		}
+		//Store the current value of button for next iteration
 		regC=!GPIO_ReadInputDataBit(ESPL_Register_Button_C, ESPL_Pin_Button_C);
+
+		//edge triggering is implemented here. The counter only increments if the previous value does not equal the current value
 		if(!GPIO_ReadInputDataBit(ESPL_Register_Button_D, ESPL_Pin_Button_D)&&!GPIO_ReadInputDataBit(ESPL_Register_Button_D, ESPL_Pin_Button_D)!=regD){
+
 			counter_D++;
 
 		}
+		//Store the current value of button for next iteration
 		regD=!GPIO_ReadInputDataBit(ESPL_Register_Button_D, ESPL_Pin_Button_D);
+
+
+		//if button K is pressed reset all the counter values.
 		if(!GPIO_ReadInputDataBit(ESPL_Register_Button_K, ESPL_Pin_Button_K)&&!GPIO_ReadInputDataBit(ESPL_Register_Button_K, ESPL_Pin_Button_K)!=regK){
+
 				counter_A=0;
 				counter_B=0;
 				counter_C=0;
 				counter_D=0;
-
-
 			}
-			regK=!GPIO_ReadInputDataBit(ESPL_Register_Button_K, ESPL_Pin_Button_K);
-		sprintf( str, "A: %d|B: %d|C %d|D: %d", counter_A, counter_B, counter_C, counter_D);
-		gdispDrawString(0, 0 , str, font1, Black);
-*/
+		regK=!GPIO_ReadInputDataBit(ESPL_Register_Button_K, ESPL_Pin_Button_K);
+
+		//Store the values of counters and Axis in str1
+		sprintf( str1, "A: %d|B: %d|C %d|D: %d    Axis X: %5d| Axis Y: %5d", counter_A, counter_B, counter_C, counter_D, ADC_GetConversionValue(ESPL_ADC_Joystick_2),ADC_GetConversionValue(ESPL_ADC_Joystick_1));
+
+		//display the values of counters and Axis on the LCD
+		gdispDrawString(0+jstickX, 12+jstickY , str1, font1, Black);
+
 
 
 		while(xQueueReceive(JoystickQueue, &joystickPosition, 0) == pdTRUE)
